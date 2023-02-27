@@ -1,7 +1,6 @@
 package com.example.MovieAPI.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -26,5 +25,35 @@ public class Franchise {
     }
 
 
+    public int getFranchiseId() {
+        return franchiseId;
+    }
 
+    public void setFranchiseId(int franchiseId) {
+        this.franchiseId = franchiseId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }

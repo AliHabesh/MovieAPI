@@ -3,7 +3,6 @@ package com.example.MovieAPI.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.List;
 
@@ -38,4 +37,76 @@ public class Movie {
   public void printCharacterList(){
       this.characterList.forEach(value -> System.out.println(value));
   }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public String getMovieReleaseYear() {
+        return movieReleaseYear;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public List<Character> getCharacterList() {
+        return characterList;
+    }
+
+    public Franchise getFranchise() {
+        return franchise;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public void setMovieReleaseYear(String movieReleaseYear) {
+        this.movieReleaseYear = movieReleaseYear;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+    public void setCharacterList(List<Character> characterList) {
+        this.characterList = characterList;
+    }
+
+    public void setFranchise(Franchise franchise) {
+        this.franchise = franchise;
+    }
 }
