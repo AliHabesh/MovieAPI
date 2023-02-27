@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,7 +19,8 @@ public class Character {
     private String gender;
     private String picture;
 
-    @ManyToOne
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "movieId")
-    private Movie movie;
+    private List<Movie> movie;
 }

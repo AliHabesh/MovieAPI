@@ -17,6 +17,6 @@ public class Franchise {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "franchise")
+    @OneToMany(mappedBy = "franchise", fetch = FetchType.EAGER)
     private List<Movie> movies;
 }
