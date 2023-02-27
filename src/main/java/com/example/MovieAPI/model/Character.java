@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -19,8 +20,15 @@ public class Character {
     private String gender;
     private String picture;
 
+    @ToString.Exclude
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "movie_character",
+            joinColumns = @JoinColumn(name = "characterId"),
+            inverseJoinColumns = @JoinColumn(name = "movieId"))
+    private List<Movie> movies;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "movieId")
-    private List<Movie> movie;
+
+    void printMovies(){
+     movies.forEach(movie -> System.out.println(movie));
+ }
 }
