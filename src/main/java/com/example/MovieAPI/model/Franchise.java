@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -16,7 +17,14 @@ public class Franchise {
     private int franchiseId;
     private String name;
     private String description;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "franchise", fetch = FetchType.EAGER)
     private List<Movie> movies;
+
+    void printMovies(){
+        movies.forEach(movie -> System.out.println(movie));
+    }
+
+
+
 }

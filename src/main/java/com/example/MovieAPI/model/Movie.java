@@ -1,11 +1,10 @@
 package com.example.MovieAPI.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -24,14 +23,19 @@ public class Movie {
 
     private String trailer;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",
             joinColumns = @JoinColumn(name = "movieId"),
             inverseJoinColumns = @JoinColumn(name = "characterId"))
     private List<Character> characterList;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "franchiseId")
     private Franchise franchise;
 
+  public void printCharacterList(){
+      this.characterList.forEach(value -> System.out.println(value));
+  }
 }
