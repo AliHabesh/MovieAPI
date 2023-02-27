@@ -24,13 +24,13 @@ public class Movie {
 
     private String trailer;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "movie_character",
             joinColumns = @JoinColumn(name = "movieId"),
             inverseJoinColumns = @JoinColumn(name = "characterId"))
     private List<Character> characterList;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "franchiseId")
     private Franchise franchise;
 
