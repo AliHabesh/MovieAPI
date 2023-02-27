@@ -1,23 +1,20 @@
-package com.example.MovieAPI.model;
+package com.example.MovieAPI.dto;
 
+import com.example.MovieAPI.model.Movie;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
-public class Character {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+public class CharacterDTO {
+
     private int characterId;
     private String fullName;
     private String alias;
     private String gender;
     private String picture;
-
-    @ManyToOne
-    @JoinColumn(name = "movieId")
     private Movie movie;
 }
