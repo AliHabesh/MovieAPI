@@ -1,11 +1,9 @@
 package com.example.MovieAPI.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -24,7 +22,7 @@ public class Movie {
 
     private String trailer;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",
             joinColumns = @JoinColumn(name = "movieId"),
             inverseJoinColumns = @JoinColumn(name = "characterId"))

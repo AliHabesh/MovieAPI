@@ -1,7 +1,6 @@
 package com.example.MovieAPI.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +19,6 @@ public class Character {
     private String picture;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "movieId")
+    @ManyToMany(mappedBy = "characterList",fetch = FetchType.EAGER)
     private List<Movie> movie;
 }
