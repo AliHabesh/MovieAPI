@@ -66,7 +66,13 @@ public class CharacterService {
     }
 
     public int deleteCharacterById(Integer id){
-        characterRepository.deleteById(id);
-        return 1;
+        try {
+            characterRepository.deleteById(id);
+            if (!characterRepository.findById(id).isPresent()) return 1;
+
+        }catch (Exception e){
+            System.out.println("Something went wrong, could not delete character from the character table!"+e.getMessage());
+        }
+        return -1;
     }
 }
