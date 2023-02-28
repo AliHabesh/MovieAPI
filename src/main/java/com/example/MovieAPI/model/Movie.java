@@ -24,13 +24,14 @@ public class Movie {
     private String trailer;
 
 
+    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",
             joinColumns = @JoinColumn(name = "movieId"),
             inverseJoinColumns = @JoinColumn(name = "characterId"))
     private List<Character> characterList;
 
-
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "franchiseId")
     private Franchise franchise;
