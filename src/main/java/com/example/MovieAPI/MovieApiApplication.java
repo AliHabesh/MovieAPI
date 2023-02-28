@@ -28,7 +28,5 @@ public class MovieApiApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
-		Character character = characterRepository.findByFullName("Tony Stark");
-
 	}
 }

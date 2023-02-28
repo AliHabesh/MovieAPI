@@ -17,7 +17,7 @@ public class MovieDTO {
     private String picture;
     private String movieReleaseYear;
     private String trailer;
-    private List<Character> characterList;
+    private List<Integer> characterList;
 
     private int franchise;
 
@@ -77,11 +77,11 @@ public class MovieDTO {
         this.trailer = trailer;
     }
 
-    public List<Character> getCharacterList() {
+    public List<Integer> getCharacterList() {
         return characterList;
     }
 
-    public void setCharacterList(List<Character> characterList) {
+    public void setCharacterList(List<Integer> characterList) {
         this.characterList = characterList;
     }
 

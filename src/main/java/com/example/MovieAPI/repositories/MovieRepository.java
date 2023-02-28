@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
     Optional<Movie> findById(Integer integer);
 
-    Optional<Movie> findMovieByMovieTitle(String movieTitle);
+    Movie findMovieByMovieTitle(String movieTitle);
 
     List<Movie> findAll();
 
@@ -18,4 +18,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     void delete(Movie entity);
 
     void deleteByMovieId(int id);
+
+
 }
