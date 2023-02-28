@@ -15,6 +15,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -44,6 +45,11 @@ public class MovieApiApplication implements ApplicationRunner {
 		Optional<Franchise> franchise = franchiseRepository.findById(1);
 		FranchiseDTO franchiseDTO = FranchiseDtoMapper.INSTANCE.franchiseToFranchiseDto(franchise.get());
 		System.out.println(franchiseDTO);
+
+		//Franchise franchise = franchiseRepository.findByName("Marvel Cinematic Universe");
+		List<Franchise> franchise1 = franchiseRepository.findAll();
+		System.out.println(franchise1);
+		//System.out.println(FranchiseDtoMapper.INSTANCE.franchiseToFranchiseDto(franchise));
 		 */
 	}
 }
