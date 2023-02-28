@@ -6,15 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CharacterDTO {
-
     private int characterId;
     private String fullName;
     private String alias;
     private String gender;
     private String picture;
-    private Movie movie;
+    private List<Movie> movie;
 }

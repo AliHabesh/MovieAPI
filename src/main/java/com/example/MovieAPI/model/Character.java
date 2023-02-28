@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,13 @@ public class Character {
     private String gender;
     private String picture;
 
+    public Character(String fullName, String alias, String gender, String picture) {
+        this.fullName = fullName;
+        this.alias = alias;
+        this.gender = gender;
+        this.picture = picture;
+    }
+
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",
@@ -28,7 +36,7 @@ public class Character {
     private List<Movie> movies;
 
 
-    void printMovies(){
+    public void printMovies(){
      movies.forEach(movie -> System.out.println(movie));
- }
+    }
 }
