@@ -25,11 +25,9 @@ public class CharacterService {
 
    public CharacterDTO saveCharacter(CharacterDTO characterDTO){
         if (characterDTO == null) return null;
-        Character character = characterRepository.save(new Character(characterDTO.getFullName(), characterDTO.getAlias(), characterDTO.getGender(), characterDTO.getPicture()));
+        Character character = characterRepository.save(CharacterDtoMapper.INSTANCE.characterDtoToCharacter(characterDTO));
         return character != null ? CharacterDtoMapper.INSTANCE.characterToCharacterDto(character):null;
     }
-
-
 
     public CharacterDTO getCharacterByName(String name){
         if (name== null || name.isEmpty()) return null;
@@ -64,7 +62,11 @@ public class CharacterService {
 
     public CharacterDTO addMovieToCharacter(MovieDTO movieDTO, String characterName){
         CharacterDTO characterDTO = CharacterDtoMapper.INSTANCE.characterToCharacterDto(characterRepository.findByFullName(characterName));
-        //TODO: add a single movie to characters list
         return null;
+    }
+
+    public int deleteCharacterById(Integer id){
+        characterRepository.deleteById(id);
+        return 1;
     }
 }

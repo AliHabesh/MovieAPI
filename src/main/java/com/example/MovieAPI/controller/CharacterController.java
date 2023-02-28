@@ -38,4 +38,9 @@ public class CharacterController {
     public CharacterDTO saveCharacter(@RequestBody CharacterDTO characterDTO){
         return characterService.saveCharacter(characterDTO);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public int deleteCharacterById(@PathVariable("id") int id){
+       return characterService.deleteCharacterById(id);
+    }
 }
