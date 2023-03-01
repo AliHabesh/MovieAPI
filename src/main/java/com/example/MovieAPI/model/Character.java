@@ -1,5 +1,6 @@
 package com.example.MovieAPI.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class Character {
         this.picture = picture;
     }
 
+    @JsonIgnore
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",

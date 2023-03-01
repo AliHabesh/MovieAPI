@@ -1,5 +1,6 @@
 package com.example.MovieAPI.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class Franchise {
     private int franchiseId;
     private String name;
     private String description;
+
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "franchise", fetch = FetchType.EAGER)
     private List<Movie> movies;
