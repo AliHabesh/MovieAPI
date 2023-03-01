@@ -18,7 +18,7 @@ public class MovieDTO {
     private String trailer;
     private List<Integer> characterList;
 
-    private Franchise franchise;
+    private int franchise;
 
 
 }

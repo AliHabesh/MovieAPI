@@ -4,7 +4,7 @@ import com.example.MovieAPI.dto.MovieDTO;
 import com.example.MovieAPI.model.Character;
 import com.example.MovieAPI.model.Movie;
 import com.example.MovieAPI.repositories.CharacterRepository;
-import org.springframework.context.annotation.Bean;
+import com.example.MovieAPI.repositories.FranchiseRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,9 +14,11 @@ import java.util.List;
 public class MovieDtoMapperImplementation implements MovieDtoMapper {
 
     private final CharacterRepository characterRepository;
+    private final FranchiseRepository franchiseRepository;
 
-    public MovieDtoMapperImplementation(CharacterRepository characterRepository) {
+    public MovieDtoMapperImplementation(CharacterRepository characterRepository, FranchiseRepository franchiseRepository) {
         this.characterRepository = characterRepository;
+        this.franchiseRepository = franchiseRepository;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class MovieDtoMapperImplementation implements MovieDtoMapper {
         if (list != null) {
             movieDTO.setCharacterList(convertCharacterList(list));
         }
-        movieDTO.setFranchise(mov.getFranchise());
+        if(mov.getFranchise() != null) movieDTO.setFranchise(mov.getFranchise().getFranchiseId());
 
         return movieDTO;
     }
@@ -62,7 +64,10 @@ public class MovieDtoMapperImplementation implements MovieDtoMapper {
         if (list != null) {
             movie.setCharacterList(convertIntegerList(list));
         }
-        movie.setFranchise(movieDTO.getFranchise());
+        if(franchiseRepository.findById(movieDTO.getFranchise()).isPresent()){
+            movie.setFranchise(franchiseRepository.findById(movieDTO.getFranchise()).get());
+        }
+
 
         return movie;
     }
@@ -78,7 +83,8 @@ public class MovieDtoMapperImplementation implements MovieDtoMapper {
     private List<Character> convertIntegerList(List<Integer> list) {
         List<Character> returnList = new ArrayList<>();
         for(int i : list){
-            returnList.add(characterRepository.findById(i).get());
+            if(characterRepository.findById(i).isPresent())
+                returnList.add(characterRepository.findById(i).get());
         }
         return returnList;
     }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/movie") // Base URL
@@ -29,23 +30,34 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findById(id));
     }
 
-    @PutMapping("{id}") // PUT: localhost:8080/api/v1/movie/1
-    public ResponseEntity update(@RequestBody MovieDTO movie, @PathVariable int id) {
-        System.out.println("hello");
+    @PutMapping("/save") // PUT: localhost:8080/api/v1/movie/save
+    public ResponseEntity save(@RequestBody MovieDTO movie) {
         // Validates if body is correct
-        if(id != movie.getMovieId())
-            return ResponseEntity.badRequest().build();
         movieService.update(movie);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{id}/characters/{characterId}") // PUT: localhost:8080/api/v1/movie/1/characters/2
-    public ResponseEntity update(@RequestBody MovieDTO movie, @PathVariable int id, @PathVariable int characterId) {
-        // Validates if body is correct
-        System.out.println("hello character");
-        if(id != movie.getMovieId())
-            return ResponseEntity.badRequest().build();
-        movieService.updateCharacterMovieList(id, characterId);
+    @PutMapping("{movieId}/character/{characterId}") // PUT: localhost:8080/api/v1/movie/1/character/2
+    public ResponseEntity updateMovieCharacterList(@PathVariable int movieId, @PathVariable int characterId) {
+        movieService.updateCharacterMovieList(movieId, characterId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{movieId}/characters") // PUT: localhost:8080/api/v1/movie/1/characters
+    public ResponseEntity updateMovieCharactersListWithList(@RequestBody List<Integer> list, @PathVariable int movieId) {
+        movieService.updateCharacterMovieListWithList(movieId, list);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}/franchise/{franchiseId}") // PUT: localhost:8080/api/v1/movie/1/franchise/2
+    public ResponseEntity updateFranchise(@PathVariable int id, @PathVariable int franchiseId) {
+        movieService.setFranchiseForMovie(id, franchiseId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{franchiseId}/franchise") // PUT: localhost:8080/api/v1/movie/1/franchise
+    public ResponseEntity updateMovieFranchiseWithList(@RequestBody List<Integer> list, @PathVariable int franchiseId) {
+        movieService.setFranchiseForMovieWithList(list, franchiseId);
         return ResponseEntity.noContent().build();
     }
 
