@@ -2,6 +2,7 @@ package com.example.MovieAPI.service;
 
 import com.example.MovieAPI.dto.MovieDTO;
 import com.example.MovieAPI.mapper.MovieDtoMapper;
+import com.example.MovieAPI.mapper.MovieDtoMapperImplementation;
 import com.example.MovieAPI.model.Movie;
 import com.example.MovieAPI.repositories.CharacterRepository;
 import com.example.MovieAPI.repositories.FranchiseRepository;
@@ -18,11 +19,13 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final FranchiseRepository franchiseRepository;
     private final CharacterRepository characterRepository;
+    private final MovieDtoMapperImplementation movieDtoMapperImplementation;
 
-    public MovieService(MovieRepository movieRepository, FranchiseRepository franchiseRepository, CharacterRepository characterRepository) {
+    public MovieService(MovieRepository movieRepository, FranchiseRepository franchiseRepository, CharacterRepository characterRepository, MovieDtoMapperImplementation movieDtoMapperImplementation) {
         this.movieRepository = movieRepository;
         this.franchiseRepository = franchiseRepository;
         this.characterRepository = characterRepository;
+        this.movieDtoMapperImplementation = movieDtoMapperImplementation;
     }
 
 
@@ -32,7 +35,7 @@ public class MovieService {
         Optional<Movie> movieOptional = movieRepository.findById(integer);
         Movie movie = movieOptional.get();
 
-        return movie != null ? MovieDtoMapper.INSTANCE.movieToMovieDto(movie) : null;
+        return movie != null ? movieDtoMapperImplementation.movieToMovieDto(movie) : null;
     }
 
 
@@ -42,7 +45,7 @@ public class MovieService {
         List<MovieDTO> movieDTOList = new ArrayList<>();
 
         for(Movie movie : movies){
-            movieDTOList.add(MovieDtoMapper.INSTANCE.movieToMovieDto(movie));
+            movieDTOList.add(movieDtoMapperImplementation.movieToMovieDto(movie));
         }
 
         return movieDTOList;
@@ -51,15 +54,15 @@ public class MovieService {
 
     public MovieDTO add(MovieDTO movieDTO) {
         if (movieDTO == null) return null;
-        Movie movie = movieRepository.save(MovieDtoMapper.INSTANCE.movieDtoToMovie(movieDTO));
-        return movie != null ? MovieDtoMapper.INSTANCE.movieToMovieDto(movie):null;
+        Movie movie = movieRepository.save(movieDtoMapperImplementation.movieDtoToMovie(movieDTO));
+        return movie != null ? movieDtoMapperImplementation.movieToMovieDto(movie):null;
     }
 
 
     public MovieDTO update(MovieDTO movieDTO) {
         if (movieDTO == null) return null;
-        Movie movie = movieRepository.save(MovieDtoMapper.INSTANCE.movieDtoToMovie(movieDTO));
-        return movie != null ? MovieDtoMapper.INSTANCE.movieToMovieDto(movie):null;
+        Movie movie = movieRepository.save(movieDtoMapperImplementation.movieDtoToMovie(movieDTO));
+        return movie != null ? movieDtoMapperImplementation.movieToMovieDto(movie):null;
     }
 
 
@@ -79,22 +82,23 @@ public class MovieService {
         if(movieId <= 0) {} else {
             movie = movieRepository.findById(movieId).get();
             movie.setFranchise(franchiseRepository.findById(franchiseId).get());
-            update(MovieDtoMapper.INSTANCE.movieToMovieDto(movie));
-            return MovieDtoMapper.INSTANCE.movieToMovieDto(movie);
+            update(movieDtoMapperImplementation.movieToMovieDto(movie));
+            return movieDtoMapperImplementation.movieToMovieDto(movie);
         }
         return null;
 
     }
 
 
-    public MovieDTO setCharacterForMovie(int movieId, int characterId) {
+    public MovieDTO updateCharacterMovieList(int movieId, int characterId) {
 
         Movie movie;
+        MovieDTO movieDTO;
         if(!(movieId <= 0)) {
             movie = movieRepository.findById(movieId).get();
-            movie.getCharacterList().add(characterRepository.findById(characterId).get());
-            update(MovieDtoMapper.INSTANCE.movieToMovieDto(movie));
-            return MovieDtoMapper.INSTANCE.movieToMovieDto(movie);
+            movieDTO = movieDtoMapperImplementation.movieToMovieDto(movie);
+            movieDTO.getCharacterList().add(characterId);
+            return update(movieDtoMapperImplementation.movieToMovieDto(movieDtoMapperImplementation.movieDtoToMovie(movieDTO)));
         }
         return null;
     }
@@ -104,8 +108,7 @@ public class MovieService {
 
         if (name== null || name.isEmpty()) return null;
         Movie movie = movieRepository.findMovieByMovieTitle(name);
-        MovieDTO movieDTO = MovieDtoMapper.INSTANCE.movieToMovieDto(movie);
-        movieDTO.setCharacterList(movie.getCharacterList());
+        MovieDTO movieDTO = movieDtoMapperImplementation.movieToMovieDto(movie);
         return movieDTO;
     }
 

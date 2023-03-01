@@ -24,13 +24,14 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findAll());
     }
 
-    @GetMapping("{id}") // GET: localhost:8080/api/v1/test/1
+    @GetMapping("{id}") // GET: localhost:8080/api/v1/movie/1
     public ResponseEntity<MovieDTO> path(@PathVariable int id) {
         return ResponseEntity.ok(movieService.findById(id));
     }
 
     @PutMapping("{id}") // PUT: localhost:8080/api/v1/movie/1
     public ResponseEntity update(@RequestBody MovieDTO movie, @PathVariable int id) {
+        System.out.println("hello");
         // Validates if body is correct
         if(id != movie.getMovieId())
             return ResponseEntity.badRequest().build();
@@ -38,6 +39,15 @@ public class MovieController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("{id}/characters/{characterId}") // PUT: localhost:8080/api/v1/movie/1/characters/2
+    public ResponseEntity update(@RequestBody MovieDTO movie, @PathVariable int id, @PathVariable int characterId) {
+        // Validates if body is correct
+        System.out.println("hello character");
+        if(id != movie.getMovieId())
+            return ResponseEntity.badRequest().build();
+        movieService.updateCharacterMovieList(id, characterId);
+        return ResponseEntity.noContent().build();
+    }
 
     @DeleteMapping("{id}") // DELETE: localhost:8080/api/v1/movie/1
     public ResponseEntity delete(@PathVariable int id) {
