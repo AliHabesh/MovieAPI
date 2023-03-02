@@ -2,6 +2,7 @@ package com.example.MovieAPI;
 
 import com.example.MovieAPI.dto.CharacterDTO;
 import com.example.MovieAPI.dto.FranchiseDTO;
+import com.example.MovieAPI.dto.MovieDTO;
 import com.example.MovieAPI.mapper.CharacterDtoMapper;
 import com.example.MovieAPI.mapper.FranchiseDtoMapper;
 import com.example.MovieAPI.model.Character;

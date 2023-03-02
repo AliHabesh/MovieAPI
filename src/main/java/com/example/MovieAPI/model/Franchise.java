@@ -18,6 +18,7 @@ public class Franchise {
     private int franchiseId;
     private String name;
     private String description;
+
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "franchise", fetch = FetchType.EAGER)

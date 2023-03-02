@@ -2,10 +2,7 @@ package com.example.MovieAPI.dto;
 
 import com.example.MovieAPI.model.Character;
 import com.example.MovieAPI.model.Franchise;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 @Data
@@ -14,10 +11,14 @@ import java.util.List;
 public class MovieDTO {
     private int movieId;
     private String movieTitle;
+    private String director;
     private String genre;
     private String picture;
     private String movieReleaseYear;
-    private List<Character> characterList;
+    private String trailer;
+    private List<Integer> characterList;
 
-    private Franchise franchise;
+    private int franchise;
+
+
 }
