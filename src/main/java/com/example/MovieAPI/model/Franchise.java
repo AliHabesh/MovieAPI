@@ -24,10 +24,4 @@ public class Franchise {
     @OneToMany(mappedBy = "franchise", fetch = FetchType.EAGER)
     private List<Movie> movies;
 
-    void printMovies(){
-        movies.forEach(movie -> System.out.println(movie));
-    }
-
-
-
 }

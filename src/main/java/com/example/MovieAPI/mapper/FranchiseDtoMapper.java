@@ -10,8 +10,5 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface FranchiseDtoMapper {
-    FranchiseDtoMapper INSTANCE = Mappers.getMapper(FranchiseDtoMapper.class);
 
-    FranchiseDTO franchiseToFranchiseDto(Franchise franchise);
-    Franchise franchiseDtoToFranchise(FranchiseDTO franchiseDTO);
 }

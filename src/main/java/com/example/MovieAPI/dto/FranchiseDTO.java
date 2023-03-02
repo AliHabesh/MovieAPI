@@ -1,6 +1,7 @@
 package com.example.MovieAPI.dto;
 
 import com.example.MovieAPI.model.Movie;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,5 +20,5 @@ public class FranchiseDTO {
     private int franchiseId;
     private String name;
     private String description;
-    private List<Movie> movies;
+    private List<Integer> movies;
 }
