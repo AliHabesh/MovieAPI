@@ -1,7 +1,6 @@
 package com.example.MovieAPI.service;
 
 import com.example.MovieAPI.dto.MovieDTO;
-import com.example.MovieAPI.mapper.MovieDtoMapper;
 import com.example.MovieAPI.mapper.MovieDtoMapperImplementation;
 import com.example.MovieAPI.model.Franchise;
 import com.example.MovieAPI.model.Movie;
@@ -9,7 +8,7 @@ import com.example.MovieAPI.model.Character;
 import com.example.MovieAPI.repositories.CharacterRepository;
 import com.example.MovieAPI.repositories.FranchiseRepository;
 import com.example.MovieAPI.repositories.MovieRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -68,19 +67,26 @@ public class MovieService {
         return movie != null ? movieDtoMapperImplementation.movieToMovieDto(movie):null;
     }
 
-
+    @Transactional
     public int deleteById(Integer integer) {
-        return movieRepository.deleteByMovieId(integer);
+        Movie movie;
+        List<Character> characters;
+        if(movieRepository.findById(integer).isPresent()) {
+            movie = movieRepository.findById(integer).get();
+            characters = movie.getCharacterList();
+            for(Character index : characters) {
+                index.getMovies().subList(index.getMovies().indexOf(movie), 1);
+                characterRepository.save(index);
+            }
+            movie.getCharacterList().clear();
+            movieRepository.save(movie);
+            movieRepository.deleteByMovieId(integer);
+            return 1;
+        }
+        return 0;
     }
-
-
-    public void delete(Movie entity) {
-        movieRepository.delete(entity);
-    }
-
 
     public MovieDTO setFranchiseForMovie(int movieId, int franchiseId) {
-
         Movie movie;
         if(!(movieId <= 0) && !(franchiseId <= 0)) {
             if(movieRepository.findById(movieId).isPresent() && franchiseRepository.findById(franchiseId).isPresent()) {
@@ -155,5 +161,4 @@ public class MovieService {
         }
         return movieDTO;
     }
-
 }

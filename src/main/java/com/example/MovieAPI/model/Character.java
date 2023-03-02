@@ -31,7 +31,7 @@ public class Character {
 
     @JsonIgnore
     @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",
             joinColumns = @JoinColumn(name = "characterId"),
             inverseJoinColumns = @JoinColumn(name = "movieId"))
