@@ -3,6 +3,7 @@ package com.example.MovieAPI.service;
 import com.example.MovieAPI.dto.CharacterDTO;
 import com.example.MovieAPI.dto.MovieDTO;
 import com.example.MovieAPI.mapper.CharacterDtoMapper;
+import com.example.MovieAPI.mapper.CharacterDtoMapperImplementation;
 import com.example.MovieAPI.model.Character;
 import com.example.MovieAPI.repositories.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +17,25 @@ import java.util.Optional;
 public class CharacterService {
 
     private CharacterRepository characterRepository;
+    private CharacterDtoMapperImplementation characterDtoMapperImplementation;
 
 
-
-    public CharacterService(CharacterRepository characterRepository){
+    public CharacterService(CharacterRepository characterRepository, CharacterDtoMapperImplementation characterDtoMapperImplementation) {
         this.characterRepository = characterRepository;
+        this.characterDtoMapperImplementation = characterDtoMapperImplementation;
     }
 
-   public CharacterDTO saveCharacter(CharacterDTO characterDTO){
+    public CharacterDTO saveCharacter(CharacterDTO characterDTO){
         if (characterDTO == null) return null;
-        Character character = characterRepository.save(CharacterDtoMapper.INSTANCE.characterDtoToCharacter(characterDTO));
-        return character != null ? CharacterDtoMapper.INSTANCE.characterToCharacterDto(character):null;
+        Character character = characterRepository.save(characterDtoMapperImplementation.characterDtoToCharacter(characterDTO));
+        return character != null ? characterDtoMapperImplementation.characterToCharacterDto(character):null;
     }
 
     public CharacterDTO getCharacterByName(String name){
         if (name== null || name.isEmpty()) return null;
 
         Character character = characterRepository.findByFullName(name);
-        return character != null ? CharacterDtoMapper.INSTANCE.characterToCharacterDto(character):null;
+        return character != null ? characterDtoMapperImplementation.characterToCharacterDto(character):null;
     }
 
     public CharacterDTO getCharacterById(int id){
@@ -42,7 +44,7 @@ public class CharacterService {
         Optional<Character> characterOptional = characterRepository.findById(id);
         Character character = characterOptional.get();
 
-        return character != null ? CharacterDtoMapper.INSTANCE.characterToCharacterDto(character):null;
+        return character != null ? characterDtoMapperImplementation.characterToCharacterDto(character):null;
     }
 
     public List<CharacterDTO> getAllCharacters(){
@@ -56,12 +58,12 @@ public class CharacterService {
             return null;
 
         ArrayList<CharacterDTO> characterDTOArrayList = new ArrayList<>();
-        characters.forEach(value -> characterDTOArrayList.add(CharacterDtoMapper.INSTANCE.characterToCharacterDto(value)));
+        characters.forEach(value -> characterDTOArrayList.add(characterDtoMapperImplementation.characterToCharacterDto(value)));
         return characterDTOArrayList;
     }
 
     public CharacterDTO addMovieToCharacter(MovieDTO movieDTO, String characterName){
-        CharacterDTO characterDTO = CharacterDtoMapper.INSTANCE.characterToCharacterDto(characterRepository.findByFullName(characterName));
+        CharacterDTO characterDTO = characterDtoMapperImplementation.characterToCharacterDto(characterRepository.findByFullName(characterName));
         return null;
     }
 

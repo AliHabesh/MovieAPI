@@ -39,7 +39,4 @@ public class Movie {
     @JoinColumn(name = "franchiseId")
     private Franchise franchise;
 
-  public void printCharacterList(){
-      this.characterList.forEach(value -> System.out.println(value));
-  }
 }
