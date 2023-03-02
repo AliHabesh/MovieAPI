@@ -21,7 +21,7 @@ public class MovieDtoMapperImplementation implements MovieDtoMapper {
         this.franchiseRepository = franchiseRepository;
     }
 
-    @Override
+
     public MovieDTO movieToMovieDto(Movie mov) {
         if (mov == null) {
             return null;
@@ -45,7 +45,7 @@ public class MovieDtoMapperImplementation implements MovieDtoMapper {
         return movieDTO;
     }
 
-    @Override
+
     public Movie movieDtoToMovie(MovieDTO movieDTO) {
         if (movieDTO == null) {
             return null;
