@@ -101,4 +101,16 @@ public class FranchiseService {
             });
             return characterList;
         }
+
+        public List<Integer> getAllMoviesInFranchise(int franchiseId) {
+            Franchise franchise;
+            ArrayList<Integer> movieList = new ArrayList<>();
+            if(franchiseRepository.findById(franchiseId).isPresent()){
+                franchise = franchiseRepository.findById(franchiseId).get();
+                franchise.getMovies().forEach(movie -> {
+                    movieList.add(movie.getMovieId());
+                });
+            }
+            return movieList;
+        }
 }
