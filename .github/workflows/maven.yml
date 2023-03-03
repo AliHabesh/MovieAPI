@@ -28,4 +28,4 @@ jobs:
         distribution: 'corretto'
         cache: maven
     - name: Build with Maven
-      run: mvn -B -DskipTests=true package --file MovieAPI/pom.xml
+      run: mvn -B -DskipTests=true package --file pom.xml
