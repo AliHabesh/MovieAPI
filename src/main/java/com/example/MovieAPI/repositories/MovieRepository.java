@@ -17,8 +17,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     Movie save(Movie movie);
 
-    //void delete(Movie entity);
-
     void deleteByMovieId(int id);
 
 

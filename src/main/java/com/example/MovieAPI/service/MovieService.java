@@ -35,11 +35,12 @@ public class MovieService {
         if(integer <= 0) return null;
 
         Optional<Movie> movieOptional = movieRepository.findById(integer);
-        Movie movie = movieOptional.get();
-
-        return movie != null ? movieDtoMapperImplementation.movieToMovieDto(movie) : null;
+        if(movieOptional.isPresent()) {
+            Movie movie = movieOptional.get();
+            return movieDtoMapperImplementation.movieToMovieDto(movie);
+        }
+        return null;
     }
-
 
     public List<MovieDTO> findAll() {
 
@@ -52,14 +53,6 @@ public class MovieService {
 
         return movieDTOList;
     }
-
-
-    public MovieDTO add(MovieDTO movieDTO) {
-        if (movieDTO == null) return null;
-        Movie movie = movieRepository.save(movieDtoMapperImplementation.movieDtoToMovie(movieDTO));
-        return movie != null ? movieDtoMapperImplementation.movieToMovieDto(movie):null;
-    }
-
 
     public MovieDTO update(MovieDTO movieDTO) {
         if (movieDTO == null) return null;
@@ -83,7 +76,7 @@ public class MovieService {
             movieRepository.deleteByMovieId(integer);
             return 1;
         }
-        return 0;
+        return -1;
     }
 
     public MovieDTO setFranchiseForMovie(int movieId, int franchiseId) {
@@ -114,7 +107,7 @@ public class MovieService {
             }
             return 1;
         }}
-        return 0;
+        return -1;
     }
 
 
