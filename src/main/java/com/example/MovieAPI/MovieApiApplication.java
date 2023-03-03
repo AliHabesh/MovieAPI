@@ -47,9 +47,9 @@ public class MovieApiApplication implements ApplicationRunner {
 		FranchiseDTO franchiseDTO = FranchiseDtoMapper.INSTANCE.franchiseToFranchiseDto(franchise.get());
 		System.out.println(franchiseDTO);
  */
-		Franchise franchise = franchiseRepository.findByName("Marvel Cinematic Universe");
+		//Franchise franchise = franchiseRepository.findByName("Marvel Cinematic Universe");
 		//List<Franchise> franchise1 = franchiseRepository.findAll();
-		System.out.println();
+		//System.out.println();
 		//System.out.println(FranchiseDtoMapper.INSTANCE.franchiseToFranchiseDto(franchise));
 
 
