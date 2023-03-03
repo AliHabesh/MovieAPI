@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,16 +29,19 @@ public class CharacterController {
                     description = "Characters found successfully",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CharacterDTO.class)) }),
-            @ApiResponse(responseCode = "400",
-                    description = "Malformed request",
-                    content = @Content),
             @ApiResponse(responseCode = "404",
                     description = "Something went wrong",
                     content = @Content)
     })
     @GetMapping
-    public List<CharacterDTO> getAllCharacters(){
-       return characterService.getAllCharacters();
+    public ResponseEntity getAllCharacters(){
+        List<CharacterDTO> list = characterService.getAllCharacters();
+        if (list != null)
+            return ResponseEntity.ok(list);
+
+
+        return ResponseEntity.status(400).body("Something went wrong");
+
     }
 
     @Operation(summary = "Get character with id")
@@ -46,16 +50,17 @@ public class CharacterController {
                     description = "Character with provided id found successfully",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CharacterDTO.class)) }),
-            @ApiResponse(responseCode = "400",
-                    description = "Malformed request",
-                    content = @Content),
             @ApiResponse(responseCode = "404",
                     description = "No character found with provided id",
                     content = @Content)
     })
     @GetMapping("/byId/{id}")
-    public CharacterDTO getCharacterById(@PathVariable("id") int id){
-        return characterService.getCharacterById(id);
+    public ResponseEntity getCharacterById(@PathVariable("id") int id){
+        CharacterDTO characterDTO = characterService.getCharacterById(id);
+        if (characterDTO != null)
+            return ResponseEntity.ok(characterDTO);
+
+        return ResponseEntity.status(404).body("No character found with provided id");
     }
 
     @Operation(summary = "Get character by name")
@@ -64,16 +69,20 @@ public class CharacterController {
                     description = "Character with provided name found successfully",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CharacterDTO.class)) }),
+
             @ApiResponse(responseCode = "400",
-                    description = "Malformed request",
-                    content = @Content),
-            @ApiResponse(responseCode = "404",
-                    description = "No character found with this name",
+                    description = "No character found with the provided name",
                     content = @Content)
     })
     @GetMapping("/byName/{name}")
-    public CharacterDTO getCharacterById(@PathVariable("name") String name){
-        return characterService.getCharacterByName(name);
+    public ResponseEntity getCharacterById(@PathVariable("name") String name){
+        CharacterDTO characterDTO = characterService.getCharacterByName(name);
+        if (characterDTO == null)
+            return ResponseEntity.status(404).body("No character found with the provided name");
+
+        return ResponseEntity.ok(characterDTO);
+
+
     }
 
     @Operation(summary = "Add or update movie")
@@ -82,15 +91,17 @@ public class CharacterController {
                     description = "Character successfully added/updated",
                     content = @Content),
             @ApiResponse(responseCode = "400",
-                    description = "Malformed request",
-                    content = @Content),
-            @ApiResponse(responseCode = "404",
-                    description = "Something went wrong",
+                    description = "Something went wrong with saving the character",
                     content = @Content)
     })
     @PostMapping("/save")
-    public CharacterDTO saveCharacter(@RequestBody CharacterDTO characterDTO){
-        return characterService.saveCharacter(characterDTO);
+    public ResponseEntity saveCharacter(@RequestBody CharacterDTO characterDTO){
+        CharacterDTO characterDTO1 = characterService.saveCharacter(characterDTO);
+        System.out.println(characterDTO + "AND "+characterDTO1);
+        if (characterDTO1.getFullName() != characterDTO.getFullName())
+            return ResponseEntity.status(404).body("Something went wrong with saving the character");
+
+        return ResponseEntity.ok(characterDTO1);
     }
 
     @Operation(summary = "Delete character")
@@ -98,15 +109,16 @@ public class CharacterController {
             @ApiResponse(responseCode = "200",
                     description = "Character successfully deleted",
                     content = @Content),
-            @ApiResponse(responseCode = "400",
-                    description = "Malformed request",
-                    content = @Content),
             @ApiResponse(responseCode = "404",
-                    description = "Something went wrong",
+                    description = "Something went wrong with deleting character",
                     content = @Content)
     })
     @DeleteMapping("/delete/{id}")
-    public int deleteCharacterById(@PathVariable("id") int id){
-       return characterService.deleteCharacterById(id);
+    public ResponseEntity deleteCharacterById(@PathVariable("id") int id){
+        int isDeleted = characterService.deleteCharacterById(id);
+        System.out.println(isDeleted);
+        return isDeleted == 1 ? ResponseEntity.ok("Character successfully deleted") :
+                                ResponseEntity.status(404).body("Something went wrong with deleting character");
     }
+
 }

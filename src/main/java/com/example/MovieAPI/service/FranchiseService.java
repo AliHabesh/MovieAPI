@@ -44,9 +44,9 @@ public class FranchiseService {
             if (id <= 0) return null;
 
             Optional<Franchise> franchiseOptional = franchiseRepository.findById(id);
-            Franchise franchise = franchiseOptional.get();
 
-            return franchise != null ? franchiseDtoMapperImplementation.franchiseToFranchiseDto(franchise):null;
+            return franchiseOptional.isPresent()  ? franchiseDtoMapperImplementation.franchiseToFranchiseDto(franchiseOptional.get())
+                                                    :null;
         }
 
         public List<FranchiseDTO> getAllFranchises(){
@@ -64,18 +64,22 @@ public class FranchiseService {
             return franchiseDTOArrayList;
         }
 
-        /*
+
         public FranchiseDTO addMovieToFranchise(int franchiseId, int movieId){
             FranchiseDTO franchiseDTO = franchiseDtoMapperImplementation.franchiseToFranchiseDto(franchiseRepository.findById(franchiseId).get());
-            Movie movie = movieRepository.findById(movieId).get();
-            movie.setFranchise(franchiseDtoMapperImplementation.franchiseDtoToFranchise(franchiseDTO));
-            franchiseDTO.getMovies().add(movie.getMovieId());
-            franchiseRepository.save(franchiseDtoMapperImplementation.franchiseDtoToFranchise(franchiseDTO));
-            movieRepository.save(movie);
-            return franchiseDTO;
+            Optional<Movie> movies = movieRepository.findById(movieId);
+            if (movies.isPresent()) {
+                Movie movie =movies.get();
+                movie.setFranchise(franchiseDtoMapperImplementation.franchiseDtoToFranchise(franchiseDTO));
+                franchiseDTO.getMovies().add(movie.getMovieId());
+                franchiseRepository.save(franchiseDtoMapperImplementation.franchiseDtoToFranchise(franchiseDTO));
+                movieRepository.save(movie);
+                return franchiseDTO;
+            }
+            return null;
         }
 
-         */
+
 
         public int deleteFranchiseById(Integer id){
             Franchise franchise;
@@ -86,20 +90,25 @@ public class FranchiseService {
                     movie.setFranchise(null);
                     movieRepository.save(movie);
                 }
+                franchiseRepository.deleteById(id);
+                return 1;
             }
-            franchiseRepository.deleteById(id);
-            return 1;
+           return -1;
         }
 
         public List<Integer> getAllCharactersInFranchise(int franchiseId){
-            Franchise franchise = franchiseRepository.findById(franchiseId).get();
-            ArrayList<Integer> characterList = new ArrayList<>();
-            franchise.getMovies().forEach(movie -> {
-                movie.getCharacterList().forEach(character -> {
-                    characterList.add(character.getCharacterId());
+            Optional<Franchise> franchiseOptional = franchiseRepository.findById(franchiseId);
+            if (franchiseOptional.isPresent()){
+                Franchise franchise = franchiseOptional.get();
+                ArrayList<Integer> characterList = new ArrayList<>();
+                franchise.getMovies().forEach(movie -> {
+                    movie.getCharacterList().forEach(character -> {
+                        characterList.add(character.getCharacterId());
+                    });
                 });
-            });
-            return characterList;
+                return characterList;
+            }
+           return null;
         }
 
         public List<Integer> getAllMoviesInFranchise(int franchiseId) {
