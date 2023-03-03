@@ -34,7 +34,7 @@ jobs:
       with:
         image: alihabesh/movie_api
         tags: latest
-        dockerfile: ./MovieAPI/Docker
+        dockerfile: Docker
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
