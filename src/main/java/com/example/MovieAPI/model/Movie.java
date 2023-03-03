@@ -18,16 +18,13 @@ public class Movie {
     private String movieTitle;
     private String genre;
     private String picture;
-
     private String director;
     private String movieReleaseYear;
-
     private String trailer;
-
 
     @JsonIgnore
     @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movie_character",
             joinColumns = @JoinColumn(name = "movieId"),
             inverseJoinColumns = @JoinColumn(name = "characterId"))

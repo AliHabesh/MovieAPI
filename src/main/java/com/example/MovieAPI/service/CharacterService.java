@@ -2,11 +2,11 @@ package com.example.MovieAPI.service;
 
 import com.example.MovieAPI.dto.CharacterDTO;
 import com.example.MovieAPI.dto.MovieDTO;
-import com.example.MovieAPI.mapper.CharacterDtoMapper;
 import com.example.MovieAPI.mapper.CharacterDtoMapperImplementation;
 import com.example.MovieAPI.model.Character;
+import com.example.MovieAPI.model.Movie;
 import com.example.MovieAPI.repositories.CharacterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.MovieAPI.repositories.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +18,13 @@ public class CharacterService {
 
     private CharacterRepository characterRepository;
     private CharacterDtoMapperImplementation characterDtoMapperImplementation;
+    private final MovieRepository movieRepository;
 
 
-    public CharacterService(CharacterRepository characterRepository, CharacterDtoMapperImplementation characterDtoMapperImplementation) {
+    public CharacterService(CharacterRepository characterRepository, CharacterDtoMapperImplementation characterDtoMapperImplementation, MovieRepository movieRepository) {
         this.characterRepository = characterRepository;
         this.characterDtoMapperImplementation = characterDtoMapperImplementation;
+        this.movieRepository = movieRepository;
     }
 
     public CharacterDTO saveCharacter(CharacterDTO characterDTO){
@@ -68,7 +70,18 @@ public class CharacterService {
     }
 
     public int deleteCharacterById(Integer id){
-        characterRepository.deleteById(id);
+        Character character;
+        List<Movie> movies;
+        if(characterRepository.findById(id).isPresent()){
+            character = characterRepository.findById(id).get();
+            movies = character.getMovies();
+            for(Movie movie : movies) {
+                movie.getCharacterList().subList(movie.getCharacterList().indexOf(character), 1);
+                movieRepository.save(movie);
+            }
+            character.getMovies().clear();
+            characterRepository.deleteById(id);
+        }
         return 1;
     }
 }

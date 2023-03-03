@@ -8,6 +8,7 @@ import com.example.MovieAPI.model.Movie;
 import com.example.MovieAPI.repositories.FranchiseRepository;
 import com.example.MovieAPI.repositories.MovieRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,6 +78,15 @@ public class FranchiseService {
          */
 
         public int deleteFranchiseById(Integer id){
+            Franchise franchise;
+            if(franchiseRepository.findById(id).isPresent()){
+                franchise = franchiseRepository.findById(id).get();
+                List<Movie> movies = franchise.getMovies();
+                for(Movie movie : movies) {
+                    movie.setFranchise(null);
+                    movieRepository.save(movie);
+                }
+            }
             franchiseRepository.deleteById(id);
             return 1;
         }
@@ -90,5 +100,17 @@ public class FranchiseService {
                 });
             });
             return characterList;
+        }
+
+        public List<Integer> getAllMoviesInFranchise(int franchiseId) {
+            Franchise franchise;
+            ArrayList<Integer> movieList = new ArrayList<>();
+            if(franchiseRepository.findById(franchiseId).isPresent()){
+                franchise = franchiseRepository.findById(franchiseId).get();
+                franchise.getMovies().forEach(movie -> {
+                    movieList.add(movie.getMovieId());
+                });
+            }
+            return movieList;
         }
 }
