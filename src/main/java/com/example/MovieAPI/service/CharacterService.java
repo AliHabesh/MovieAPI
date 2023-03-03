@@ -44,9 +44,7 @@ public class CharacterService {
         if (id <= 0) return null;
 
         Optional<Character> characterOptional = characterRepository.findById(id);
-        Character character = characterOptional.get();
-
-        return character != null ? characterDtoMapperImplementation.characterToCharacterDto(character):null;
+        return characterOptional.isPresent()  ? characterDtoMapperImplementation.characterToCharacterDto(characterOptional.get()):null;
     }
 
     public List<CharacterDTO> getAllCharacters(){
@@ -81,7 +79,9 @@ public class CharacterService {
             }
             character.getMovies().clear();
             characterRepository.deleteById(id);
+            return 1;
         }
-        return 1;
+
+        return -1;
     }
 }
