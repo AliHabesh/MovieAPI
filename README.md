@@ -6,7 +6,7 @@ This project involves the creation of a RESTful API with Spring Web,
 utilizing Hibernate and PostgreSQL database to store and manipulate 
 data related to movie characters, movies, and franchises.
 
-##tools: 
+## tools: 
 
 • IntelliJ with Java 17, Spring Web, Spring Data JPA, PostgreSQL, Lombok
 
@@ -58,7 +58,7 @@ data related to movie characters, movies, and franchises.
 
 Api documentation was created by using Swagger api.
 
-#Developers:
+## Developers:
 
 * Samuel Ahjoniemi
 
